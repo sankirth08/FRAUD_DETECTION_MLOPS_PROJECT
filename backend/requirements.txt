@@ -1,0 +1,16 @@
+﻿pandas
+numpy
+scikit-learn==1.9.1
+imbalanced-learn
+xgboost
+joblib
+fastapi
+uvicorn[standard]
+streamlit
+requests
+mlflow
+matplotlib
+seaborn
+pydantic
+pytest
+PyYAML

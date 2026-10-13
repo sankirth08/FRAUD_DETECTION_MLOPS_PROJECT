@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a1020">
+    <title>Fraud Intelligence | Transaction Monitoring</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./frontend/style.css">
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar" id="sidebar">
+            <a class="brand" href="#overview" aria-label="Fraud Intelligence overview">
+                <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+                <span class="brand-copy"><strong>Fraud Intelligence</strong><small>RISK OPERATIONS</small></span>
+            </a>
+
+            <p class="nav-label">WORKSPACE</p>
+            <nav class="side-nav" aria-label="Main navigation">
+                <a class="nav-link active" href="#overview"><span class="nav-icon">◫</span><span>Overview</span></a>
+                <a class="nav-link" href="#detection"><span class="nav-icon">⌕</span><span>Fraud Detection</span></a>
+                <a class="nav-link" href="#transactions"><span class="nav-icon">⇄</span><span>Transactions</span></a>
+                <a class="nav-link" href="#analytics"><span class="nav-icon">◌</span><span>Analytics</span></a>
+                <a class="nav-link" href="#performance"><span class="nav-icon">▤</span><span>Model Performance</span></a>
+            </nav>
+
+            <div class="sidebar-spacer"></div>
+            <div class="sidebar-model">
+                <span class="model-orbit" aria-hidden="true">✳</span>
+                <div><strong>Production model</strong><small>Logistic Regression</small></div>
+                <span class="model-indicator" aria-label="API status" id="sidebar-indicator"></span>
+            </div>
+            <div class="sidebar-footer">LOCAL WORKSPACE <span>•</span> PRIVATE</div>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <button class="menu-button" id="menu-button" type="button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+                <div class="breadcrumb"><span>Risk operations</span><span class="breadcrumb-slash">/</span><strong id="current-view">Overview</strong></div>
+                <div class="topbar-right">
+                    <div class="api-pill" id="api-status" data-state="checking" role="status" aria-live="polite"><span class="api-dot"></span><span>Checking API</span></div>
+                    <div class="date-chip"><span class="live-mark"></span> Live workspace</div>
+                </div>
+            </header>
+
+            <div class="page-content">
+                <section class="page-section" id="overview" data-title="Overview">
+                    <div class="page-heading">
+                        <div><p class="eyebrow">MONITORING CENTER <span class="eyebrow-line"></span></p><h1>Good to see you<span class="title-period">.</span></h1><p class="heading-copy">Your transaction risk picture, built from live predictions.</p></div>
+                        <a class="primary-link" href="#detection"><span aria-hidden="true">＋</span> Analyze transaction</a>
+                    </div>
+
+                    <div class="metrics-grid" aria-label="Prediction session summary">
+                        <article class="metric-card metric-total"><div class="metric-top"><span>Total transactions</span><span class="metric-icon icon-blue">⇄</span></div><strong id="total-count">—</strong><p>Predictions in this session</p></article>
+                        <article class="metric-card metric-fraud"><div class="metric-top"><span>Fraud detected</span><span class="metric-icon icon-purple">⌁</span></div><strong id="fraud-count">—</strong><p>Flagged by the model</p></article>
+                        <article class="metric-card metric-legitimate"><div class="metric-top"><span>Legitimate</span><span class="metric-icon icon-teal">✓</span></div><strong id="legitimate-count">—</strong><p>Below the risk threshold</p></article>
+                        <article class="metric-card metric-rate"><div class="metric-top"><span>Fraud rate</span><span class="metric-icon icon-amber">％</span></div><strong id="fraud-rate">—</strong><p>Of analyzed transactions</p></article>
+                    </div>
+
+                    <div class="overview-grid">
+                        <article class="surface chart-surface">
+                            <div class="surface-heading"><div><h2>Prediction activity</h2><p>Fraud probability for your latest analyses</p></div><span class="chart-tag"><span></span> THIS SESSION</span></div>
+                            <div class="chart-wrap chart-wide"><canvas id="activity-chart" aria-label="Fraud probability over the latest session predictions"></canvas><div class="chart-empty" id="activity-empty">Predictions will appear here after analysis.</div></div>
+                        </article>
+                        <article class="surface chart-surface distribution-surface">
+                            <div class="surface-heading"><div><h2>Risk distribution</h2><p>Predicted outcomes this session</p></div></div>
+                            <div class="distribution-content"><div class="chart-wrap chart-donut"><canvas id="distribution-chart" aria-label="Fraud and legitimate prediction distribution"></canvas><div class="donut-center"><strong id="donut-total">—</strong><span>ANALYZED</span></div></div><div class="legend"><div><span class="legend-dot fraud-dot"></span><span>Fraud</span><strong id="legend-fraud">—</strong></div><div><span class="legend-dot legit-dot"></span><span>Legitimate</span><strong id="legend-legitimate">—</strong></div></div></div>
+                        </article>
+                    </div>
+
+                    <article class="surface recent-surface">
+                        <div class="surface-heading"><div><h2>Recent predictions</h2><p>Only transactions analyzed in this browser session</p></div><a class="text-link" href="#transactions">View all <span aria-hidden="true">→</span></a></div>
+                        <div class="table-scroll"><table><thead><tr><th>TRANSACTION</th><th>TYPE</th><th>AMOUNT</th><th>RISK SCORE</th><th>DECISION</th></tr></thead><tbody id="overview-table"><tr class="empty-row"><td colspan="5">No predictions in this session yet.</td></tr></tbody></table></div>
+                    </article>
+                </section>
+
+                <section class="page-section detection-section" id="detection" data-title="Fraud Detection">
+                    <div class="section-heading"><div><p class="eyebrow">REAL-TIME SCORING <span class="eyebrow-line"></span></p><h2>Fraud detection</h2><p>Submit transaction details to score them with your production model.</p></div><div class="threshold-chip"><span class="threshold-dot"></span> Flag threshold <strong id="threshold-value">80%</strong></div></div>
+                    <div class="detection-grid">
+                        <form id="fraud-form" class="surface form-surface">
+                            <div class="form-heading"><span class="form-step">01</span><div><h3>Transaction details</h3><p>Account identifiers are not requested or stored.</p></div></div>
+                            <div class="field-row"><div class="field"><label for="type">Transaction type</label><select id="type" name="type" required><option value="PAYMENT">Payment</option><option value="TRANSFER">Transfer</option><option value="CASH_OUT">Cash out</option><option value="CASH_IN">Cash in</option><option value="DEBIT">Debit</option></select></div><div class="field"><label for="step">Transaction step</label><input id="step" name="step" type="number" min="1" step="1" value="1" required></div></div>
+                            <div class="field"><label for="amount">Transaction amount <span>USD-equivalent</span></label><div class="input-prefix"><span>$</span><input id="amount" name="amount" type="number" min="0" step="any" placeholder="0.00" required></div></div>
+                            <div class="field-group-label"><span>Account balances</span><span>BEFORE → AFTER</span></div>
+                            <div class="field-row"><div class="field"><label for="oldbalanceOrg">Sender · previous</label><input id="oldbalanceOrg" name="oldbalanceOrg" type="number" min="0" step="any" value="10000" required></div><div class="field"><label for="newbalanceOrig">Sender · new</label><input id="newbalanceOrig" name="newbalanceOrig" type="number" min="0" step="any" value="5000" required></div></div>
+                            <div class="field-row"><div class="field"><label for="oldbalanceDest">Receiver · previous</label><input id="oldbalanceDest" name="oldbalanceDest" type="number" min="0" step="any" value="0" required></div><div class="field"><label for="newbalanceDest">Receiver · new</label><input id="newbalanceDest" name="newbalanceDest" type="number" min="0" step="any" value="0" required></div></div>
+                            <button class="analyze-button" id="analyze-button" type="submit"><span>Run fraud analysis</span><span aria-hidden="true">↗</span></button>
+                            <p class="form-error" id="error-message" role="alert"></p>
+                        </form>
+
+                        <article class="surface result-surface" aria-live="polite">
+                            <div class="result-topline"><span class="result-label">MODEL ASSESSMENT</span><span class="result-shield">✳</span></div>
+                            <div class="empty-result" id="empty-result"><div class="scan-graphic"><span></span><span></span><span></span></div><h3>Ready when you are</h3><p>Submit transaction details to receive a risk score from the active model.</p></div>
+                            <div id="result-content" hidden>
+                                <div class="result-status" id="result-banner" data-risk="low"><span class="result-status-dot"></span><span id="result-label">Legitimate</span><span class="risk-caption" id="risk-caption">LOW RISK</span></div>
+                                <div class="probability-heading"><span>Fraud probability</span><strong id="probability-value">0%</strong></div>
+                                <div class="probability-track"><div class="probability-fill" id="probability-bar"></div><span class="threshold-marker" title="Model flag threshold"></span></div>
+                                <div class="probability-scale"><span>0%</span><span id="result-threshold">80% flag threshold</span><span>100%</span></div>
+                                <div class="result-details"><div><span>MODEL DECISION</span><strong id="decision-value">Legitimate</strong></div><div><span>TRANSACTION TYPE</span><strong id="result-type">—</strong></div><div><span>MODEL</span><strong>Logistic Regression</strong></div></div>
+                                <p class="result-disclaimer">A model estimate for review, not a guarantee. Apply your organization’s verification process before taking action.</p>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="page-section transactions-section" id="transactions" data-title="Transactions">
+                    <div class="section-heading"><div><p class="eyebrow">SESSION LOG <span class="eyebrow-line"></span></p><h2>Transactions</h2><p>A local, in-memory log of predictions made in this browser session.</p></div><span class="session-count" id="session-count">0 predictions</span></div>
+                    <article class="surface table-surface"><div class="table-scroll"><table><thead><tr><th>REFERENCE</th><th>TIME</th><th>TYPE</th><th>AMOUNT</th><th>PROBABILITY</th><th>DECISION</th></tr></thead><tbody id="transactions-table"><tr class="empty-row"><td colspan="6">No predictions in this session yet.</td></tr></tbody></table></div></article>
+                    <p class="privacy-note"><span aria-hidden="true">◈</span> No transaction history is uploaded or persisted by this dashboard. Account identifiers are never collected.</p>
+                </section>
+
+                <section class="page-section analytics-section" id="analytics" data-title="Analytics">
+                    <div class="section-heading"><div><p class="eyebrow">SESSION INSIGHTS <span class="eyebrow-line"></span></p><h2>Analytics</h2><p>Charts reflect predictions made since this page was opened.</p></div></div>
+                    <div class="analytics-grid"><article class="surface chart-surface"><div class="surface-heading"><div><h3>Fraud probability trend</h3><p>Recent model scores, in submission order</p></div></div><div class="chart-wrap analytics-line"><canvas id="analytics-chart" aria-label="Recent fraud probability trend"></canvas><div class="chart-empty" id="analytics-empty">No prediction data available yet.</div></div></article><article class="surface analytics-note"><span class="analytics-note-icon">✳</span><h3>Read the model score in context.</h3><p>Fraud probability is the model’s estimate for an individual transaction. It is not a population statistic or a guarantee of fraud.</p><div class="note-divider"></div><div class="note-stat"><span>Decision threshold</span><strong id="analytics-threshold">80%</strong></div></article></div>
+                </section>
+
+                <section class="page-section performance-section" id="performance" data-title="Model Performance">
+                    <div class="section-heading"><div><p class="eyebrow">VALIDATION SNAPSHOT <span class="eyebrow-line"></span></p><h2>Model performance</h2><p>Evaluation metrics from the existing project report.</p></div><span class="source-chip"><span></span> evaluation_results.csv</span></div>
+                    <div class="performance-grid"><article class="surface performance-card"><span class="performance-accent accent-lilac"></span><p>Precision</p><strong>7.29<span>%</span></strong><small>Share of flagged predictions that were fraud</small></article><article class="surface performance-card"><span class="performance-accent accent-cyan"></span><p>Recall</p><strong>81.58<span>%</span></strong><small>Share of fraud cases detected in evaluation</small></article><article class="surface performance-card"><span class="performance-accent accent-pink"></span><p>F1 score</p><strong>13.39<span>%</span></strong><small>Harmonic mean of precision and recall</small></article></div>
+                    <div class="performance-footnote"><span>i</span><p>These are saved evaluation results, not live measurements. Accuracy and evaluation sample size are not present in the available report.</p></div>
+                </section>
+
+                <footer class="page-footer"><span>FRAUD INTELLIGENCE</span><span>Model estimates are decision support, not a substitute for review.</span><span id="footer-api">API connection checking</span></footer>
+            </div>
+        </main>
+    </div>
+    <div class="mobile-scrim" id="mobile-scrim"></div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script type="module" src="./frontend/frontend/src/app.js"></script>
+</body>
+</html>

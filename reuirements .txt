@@ -1,0 +1,19 @@
+
+@'
+pandas
+numpy
+scikit-learn
+imbalanced-learn
+xgboost
+joblib
+fastapi
+uvicorn[standard]
+streamlit
+requests
+mlflow
+matplotlib
+seaborn
+pydantic
+pytest
+PyYAML
+'@ | Set-Content backend\requirements.txt

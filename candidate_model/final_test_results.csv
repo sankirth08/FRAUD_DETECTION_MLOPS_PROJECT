@@ -1,0 +1,2 @@
+model,threshold,precision,recall,f1,accuracy,average_precision,roc_auc,true_negatives,false_positives,false_negatives,true_positives
+Random Forest,0.38,0.9776536312849162,0.7675438596491229,0.85995085995086,0.999728202560618,0.8710294950885552,0.9688490174703299,209483,4,53,175

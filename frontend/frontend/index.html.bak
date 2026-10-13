@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fraud Detection System</title>
+    <link rel="stylesheet" href="./frontend/style.css">
+</head>
+<body>
+    <header class="header">
+        <div>
+            <h1>Fraud Detection System</h1>
+            <p>AI-powered transaction risk analysis</p>
+        </div>
+        <span class="status" id="api-status" data-state="checking" role="status" aria-live="polite">
+            <span class="status-dot"></span>
+            API: checking
+        </span>
+    </header>
+
+    <main class="container">
+        <section class="welcome">
+            <p class="eyebrow">TRANSACTION MONITORING</p>
+            <h2>Analyze a transaction</h2>
+            <p>Enter transaction details to check whether a payment may be fraudulent.</p>
+        </section>
+
+        <section class="layout">
+            <form id="fraud-form" class="panel">
+                <h3>Transaction details</h3>
+                <p class="muted">Enter the details below.</p>
+
+                <label for="step">Transaction step</label>
+                <input id="step" name="step" type="number" min="1" value="1" required>
+
+                <label for="type">Transaction type</label>
+                <select id="type" name="type" required>
+                    <option value="PAYMENT">Payment</option>
+                    <option value="TRANSFER">Transfer</option>
+                    <option value="CASH_OUT">Cash out</option>
+                    <option value="CASH_IN">Cash in</option>
+                    <option value="DEBIT">Debit</option>
+                </select>
+
+                <label for="amount">Transaction amount</label>
+                <input id="amount" name="amount" type="number" min="0" step="any" placeholder="e.g. 5000" required>
+
+                <div class="field-grid">
+                    <div>
+                        <label for="oldbalanceOrg">Sender's old balance</label>
+                        <input id="oldbalanceOrg" name="oldbalanceOrg" type="number" min="0" step="any" value="10000" required>
+                    </div>
+
+                    <div>
+                        <label for="newbalanceOrig">Sender's new balance</label>
+                        <input id="newbalanceOrig" name="newbalanceOrig" type="number" min="0" step="any" value="5000" required>
+                    </div>
+
+                    <div>
+                        <label for="oldbalanceDest">Receiver's old balance</label>
+                        <input id="oldbalanceDest" name="oldbalanceDest" type="number" min="0" step="any" value="0" required>
+                    </div>
+
+                    <div>
+                        <label for="newbalanceDest">Receiver's new balance</label>
+                        <input id="newbalanceDest" name="newbalanceDest" type="number" min="0" step="any" value="0" required>
+                    </div>
+                </div>
+
+                <button type="submit" id="analyze-button">
+                    Analyze transaction
+                </button>
+
+                <p id="error-message" class="error" role="alert"></p>
+            </form>
+
+            <section class="panel result-panel">
+                <h3>Analysis result</h3>
+                <p class="muted">Your prediction will appear here.</p>
+
+                <div id="empty-result" class="empty-result">
+                    <div class="empty-icon">↗</div>
+                    <h4>Ready to analyze</h4>
+                    <p>Submit the transaction details to view the model's prediction and fraud probability.</p>
+                </div>
+
+                <div id="result-content" hidden>
+                    <div id="result-banner" class="result-banner">
+                        <span id="result-label">Prediction</span>
+                    </div>
+
+                    <p class="metric-label">Fraud probability</p>
+
+                    <div class="probability-row">
+                        <strong id="probability-value">0%</strong>
+                    </div>
+
+                    <div class="progress-track">
+                        <div id="probability-bar" class="progress-bar"></div>
+                    </div>
+
+                    <p id="threshold-note" class="threshold-note">Flag threshold: 80%</p>
+
+                    <p class="note">
+                        This is a machine-learning prediction, not a guarantee
+                        that a transaction is fraudulent or legitimate.
+                    </p>
+                </div>
+            </section>
+        </section>
+
+        <footer>Fraud Detection · FastAPI · Machine Learning</footer>
+    </main>
+
+    <script type="module" src="./frontend/frontend/src/app.js"></script>
+</body>
+</html>
